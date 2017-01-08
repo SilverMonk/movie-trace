@@ -1,53 +1,39 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div class="hello">
+        <el-table :data="articles" stripe style="width: 100%">
+            <el-table-column prop="title" label="名称 " width="180">
+            </el-table-column>
+            <el-table-column prop="year" label="日期" width="180">
+            </el-table-column>
+            <el-table-column prop="rating.average" label="豆瓣评分">
+            </el-table-column>
+        </el-table>
+    </div>
 </template>
-
 <script>
 export default {
-  name: 'hello',
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-    };
-  },
+    name: 'hello',
+    data() {
+        return {
+            articles: {},
+            msg: 'Welcome to Your Vue.js App',
+        };
+    },
+    mounted() {
+        this.$http.jsonp('https://api.douban.com/v2/movie/top250?count=10', {}, {
+            headers: {},
+            emulateJSON: true,
+        }).then((response) => {
+            this.articles = response.data.subjects;
+        }, (response) => {
+            console.log(response);
+        });
+    },
 };
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+.el-table th {
+    text-align: center;
 }
 </style>
