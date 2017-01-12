@@ -7,7 +7,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import App from './App';
 
-import Hello from './components/Hello';
+import FilmList from './components/FilmList';
+import FilmDetail from './components/FilmDetail';
 // 开启debug模式
 Vue.config.debug = true;
 Vue.use(ElementUI);
@@ -20,7 +21,10 @@ const router = new VueRouter({
     base: __dirname,
     routes: [{
         path: '/',
-        component: Hello,
+        component: FilmList,
+    }, {
+        path: '/film/:id',
+        component: FilmDetail,
     }],
 });
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div class="film-list">
         <el-table :data="articles" border default-sort-prop="year" default-sort-order="descending" style="width: 100%">
             <el-table-column prop="title" label="名称 " sortable width="200">
             </el-table-column>
@@ -14,8 +14,9 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="100">
                 <template scope="scope">
-                    <el-button @click="" type="text" size="small">查看</el-button>
-                    <el-button type="text" size="small">编辑</el-button>
+                    <el-button type="text" size="small">
+                        <router-link :to="'film/'+scope.row.id">编辑</router-link>
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -23,11 +24,10 @@
 </template>
 <script>
 export default {
-    name: 'hello',
+    name: 'filmlist',
     data() {
         return {
             articles: [],
-            msg: 'Welcome to Your Vue.js App',
         };
     },
     methods: {
@@ -44,24 +44,22 @@ export default {
             emulateJSON: true,
         }).then((response) => {
             this.articles = response.data.subjects;
-        }, (response) => {
-            console.log(response);
         });
+        // , (response) => {
+        // console.log(response);
+        // }
     },
-
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.hello {
+<style lang="less">
+.film-list {
     margin-top: 20px;
-}
-
-.el-table th {
-    text-align: center;
-}
-
-.tags-item {
-    margin-left: 10px;
+    .el-table th {
+        text-align: center;
+    }
+    .tags-item {
+        margin-left: 10px;
+    }
 }
 </style>
