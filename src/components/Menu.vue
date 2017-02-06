@@ -6,8 +6,13 @@
                 <template slot="title"><i class="el-icon-menu"></i>数据管理</template>
                 <el-menu-item-group>
                     <el-menu-item index="1">
-                        <router-link to="/">
+                        <router-link to="/film">
                             <i class="el-icon-document"></i> 电影
+                        </router-link>
+                    </el-menu-item>
+                     <el-menu-item index="2">
+                        <router-link to="/director">
+                            <i class="el-icon-document"></i> 导演
                         </router-link>
                     </el-menu-item>
                 </el-menu-item-group>
