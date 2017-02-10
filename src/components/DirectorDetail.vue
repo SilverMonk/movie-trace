@@ -1,8 +1,8 @@
 <template>
     <div class="film-detail">
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="form" :model="directorInfo" label-width="80px">
             <el-form-item label="电影名称">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="directorInfo.id"></el-input>
             </el-form-item>
         </el-form>
     </div>
@@ -24,9 +24,9 @@ export default {
             },
         };
     },
-    methods: {
-        onSubmit() {
-
+    computed: {
+        directorInfo: function() {
+            return this.$store.getters.directorList[this.$route.params.id];
         },
     },
     mounted() {},

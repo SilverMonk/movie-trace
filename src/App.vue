@@ -11,14 +11,6 @@ export default {
     components: {
         Layout,
     },
-    methods: {
-        // handleOpen(key, keyPath) {
-        //     // console.log(key, keyPath);
-        // },
-        // handleClose(key, keyPath) {
-        //     // console.log(key, keyPath);
-        // },
-    },
 };
 </script>
 <style>
@@ -27,6 +19,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow: hidden;
 }
 
 a {

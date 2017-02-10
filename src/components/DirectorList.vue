@@ -31,12 +31,6 @@ export default {
         },
     },
     methods: {
-        formatter(row) {
-            return row.year * 1;
-        },
-        filterTag(value, row) {
-            return row.genres.indexOf(value) > -1;
-        },
     },
     mounted() {
         // this.$http.jsonp('https://api.douban.com/v2/movie/top250?count=10', {}, {
