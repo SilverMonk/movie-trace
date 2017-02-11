@@ -5,15 +5,28 @@ var router = jsonServer.router();
 var db = require('./db.js')();
 
 module.exports = function(server) {
-    server.get('/:class', function(req, res) {
-        res.json(db[req.params.class]);
-    })
-    server.get('/:class/:action', function(req, res) {
+    server.get('/:pname', function(req, res) {
+        res.json(db);
+    });
+    server.get('/:pname/:class', function(req, res) {
+        res.json(new Sysmsg(db[req.params.class]));
+    });
+    server.get('/:pname/:class/:action', function(req, res) {
         if (req.params.action == 'get') {
-            res.json(db[req.params.class][req.query.id]);
+            res.json(new Sysmsg(db[req.params.class][req.query.id]));
         } else if (req.params.action == 'list') {
-            res.json(db[req.params.class]);
+            res.json(new Sysmsg(db[req.params.class]));
+        } else {
+            //console.log(req.params.class);
         }
     });
-    server.use(router);
+    //server.use(router);
+    server.use('/nestfilm', router)
+};
+class Sysmsg {
+    constructor(data) {
+        this.errCode = 0;
+        this.errMsg = "";
+        this.data = data;
+    }
 }

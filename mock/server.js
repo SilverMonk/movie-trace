@@ -1,6 +1,6 @@
 var jsonServer = require('json-server');
 var server = jsonServer.create();
-var router = require('./router')(server);
+require('./router')(server);
 
 var middlewares = jsonServer.defaults();
 server.use(middlewares)
@@ -12,6 +12,7 @@ server.use(function(req, res, next) {
     }
     next()
 });
+
 var port = 3000;
 server.listen(port, function() {
     console.log('JSON Server is running at port ' + port);

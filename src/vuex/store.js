@@ -1,12 +1,39 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-class ErrorMsg {
-    constructor(errCode, errMsg) {
-        this.a = { errCode, errMsg };
-    }
-}
+import axios from 'axios';
 
+Vue.prototype.$http = axios.create({
+    baseURL: '/nestfilm/',
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    transformRequest: [function(data) {
+        return JSON.stringify(data);
+    }],
+});
+
+const util = {
+    isArr: (obj) => {
+        if (obj instanceof Array) {
+            return true;
+        }
+        return false;
+    },
+    isObj: (obj) => {
+        if (obj instanceof Object) {
+            return true;
+        }
+        return false;
+    },
+};
+
+// class ErrorMsg {
+//     constructor(errCode, errMsg) {
+//         this.a = { errCode, errMsg };
+//     }
+// }
 Vue.use(Vuex);
 
 // 创建一个对象来保存应用启动时的初始状态
@@ -31,8 +58,24 @@ const state = {
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
 const mutations = {
     addDirector(store, director) {
-        if (director) {
+        if (util.isArr(director)) {
+            store.director = director.reduce((coll, item) => {
+                coll.push(item);
+                return coll;
+            }, store.director);
+        } else if (util.isObj(director)) {
             store.director.push(director);
+        }
+    },
+    addFilm(store, film) {
+        debugger;
+        if (util.isArr(film)) {
+            store.film = film.reduce((coll, item) => {
+                coll.push(item);
+                return coll;
+            }, store.film);
+        } else if (util.isObj(film)) {
+            store.film.push(film);
         }
     },
 };
@@ -41,12 +84,19 @@ const getters = {
     directorList(store) {
         return store.director;
     },
+    filmList(store) {
+        return store.film;
+    },
 };
 const actions = {
     newDirector: function(store, param) {
-        return new Promise((resolve) => {
-            store.commit('addDirector', param);
-            resolve(new ErrorMsg(0, '牟文提'));
+        return axios.get('/director/insert', param).then((response) => {
+            store.commit('addDirector', response.data.data);
+        });
+    },
+    getFilmList: function(store, param) {
+        return axios.get('/nestfilm/film/list', param).then((response) => {
+            store.commit('addFilm', response.data.data);
         });
     },
     // increment: function(store, param) {

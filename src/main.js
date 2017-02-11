@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import App from './App';
@@ -16,7 +15,6 @@ import DirectorDetail from './components/DirectorDetail';
 Vue.config.debug = true;
 Vue.use(ElementUI);
 Vue.use(VueRouter);
-Vue.use(VueResource);
 /* eslint-disable no-new */
 
 const router = new VueRouter({

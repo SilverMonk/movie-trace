@@ -1,6 +1,6 @@
 <template>
     <div class="film-list">
-        <el-table :data="articles" border default-sort-prop="year" default-sort-order="descending" style="width: 100%">
+        <el-table :data="filmList" border default-sort-prop="year" default-sort-order="descending" style="width: 100%">
             <el-table-column prop="title" label="名称 " sortable width="200">
             </el-table-column>
             <el-table-column prop="year" label="日期" sortable width="120">
@@ -37,14 +37,18 @@ export default {
         filterTag(value, row) {
             return row.genres.indexOf(value) > -1;
         },
+        filmList: function() {
+            return this.$store.getters.filmList;
+        },
     },
     mounted() {
-        this.$http.jsonp('https://api.douban.com/v2/movie/top250?count=10', {}, {
-            headers: {},
-            emulateJSON: true,
-        }).then((response) => {
-            this.articles = response.data.subjects;
-        });
+        this.$store.dispatch('getFilmList', {});
+        // this.$http.jsonp('https://api.douban.com/v2/movie/top250?count=10', {}, {
+        //     headers: {},
+        //     emulateJSON: true,
+        // }).then((response) => {
+        //     this.articles = response.data.subjects;
+        // });
         // , (response) => {
         // console.log(response);
         // }
