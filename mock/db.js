@@ -4,20 +4,28 @@ const faker = require('faker');
 
 module.exports = function() {
     let data = {
-        'director': [
-            new Director(0),
-            new Director(1),
-            new Director(2),
-            new Director(3),
-            new Director(4),
-        ],
-        'film': [
-            new Film(0),
-            new Film(1),
-            new Film(2),
-            new Film(3),
-            new Film(4),
-        ]
+        'director': {
+            data: [
+                new Director(0),
+                new Director(1),
+                new Director(2),
+                new Director(3),
+                new Director(4),
+            ],
+            count: 103,
+            timestamp: new Date().getTime(),
+        },
+        'film': {
+            data: [
+                new Film(0),
+                new Film(1),
+                new Film(2),
+                new Film(3),
+                new Film(4),
+            ],
+            count: 103,
+            timestamp: new Date().getTime(),
+        },
     }
     return data
 }

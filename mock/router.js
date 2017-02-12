@@ -9,11 +9,11 @@ module.exports = function(server) {
         res.json(db);
     });
     server.get('/:pname/:class', function(req, res) {
-        res.json(new Sysmsg(db[req.params.class]));
+        res.json(new Sysmsg(db[req.params.class].data));
     });
     server.get('/:pname/:class/:action', function(req, res) {
         if (req.params.action == 'get') {
-            res.json(new Sysmsg(db[req.params.class][req.query.id]));
+            res.json(new Sysmsg(db[req.params.class].data[req.query.id]));
         } else if (req.params.action == 'list') {
             res.json(new Sysmsg(db[req.params.class]));
         } else {

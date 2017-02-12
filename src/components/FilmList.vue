@@ -1,17 +1,24 @@
 <template>
     <div class="film-list">
-        <el-table :data="filmList" border default-sort-prop="year" default-sort-order="descending" style="width: 100%">
-            <el-table-column prop="title" label="名称 " sortable width="200">
+        <el-table :data="filmList" border default-sort-prop="year" default-sort-order="descending" height=750 style="width: 100%">
+            <el-table-column prop="namecn" label="名称 " sortable width="200">
             </el-table-column>
-            <el-table-column prop="year" label="日期" sortable width="120">
+            <el-table-column prop="imbdbno" label="日期" sortable width="120">
             </el-table-column>
-            <el-table-column prop="rating.average" sortable label="豆瓣评分" width="120">
+            <el-table-column prop="languagecn" sortable label="语言" width="120">
             </el-table-column>
-            <el-table-column prop="genres" label="标签" :filters="[{ text: '犯罪', value: '犯罪' }, { text: '剧情', value: '剧情' }]" :filter-method="filterTag">
+            <el-table-column class="paragraph" prop="introduction" sortable label="简介">
+            </el-table-column>
+            <el-table-column prop="avaurlSmall" sortable label="图">
+                <template scope="scope">
+                    <img :src="scope.row.avaurlSmall" class="image">
+                </template>
+            </el-table-column>
+            <!--    <el-table-column prop="genres" label="标签" :filters="[{ text: '犯罪', value: '犯罪' }, { text: '剧情', value: '剧情' }]" :filter-method="filterTag">
                 <template scope="scope">
                     <el-tag v-bind:class="'tags-item'" v-for="item in scope.row.genres" :type="'primary'" close-transition>{{item}}</el-tag>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column fixed="right" label="操作" width="100">
                 <template scope="scope">
                     <el-button type="text" size="small">
@@ -20,6 +27,8 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination :current-page="currentPage" :page-size="100" layout="total, prev, pager, next" :total="1000">
+        </el-pagination>
     </div>
 </template>
 <script>
@@ -27,8 +36,13 @@ export default {
     name: 'filmlist',
     data() {
         return {
-            articles: [],
+            currentPage: 1,
         };
+    },
+    computed: {
+        filmList: function() {
+            return this.$store.getters.filmList;
+        },
     },
     methods: {
         formatter(row) {
@@ -37,12 +51,11 @@ export default {
         filterTag(value, row) {
             return row.genres.indexOf(value) > -1;
         },
-        filmList: function() {
-            return this.$store.getters.filmList;
-        },
     },
     mounted() {
-        this.$store.dispatch('getFilmList', {});
+        if (this.$store.getters.filmList.length === 0) {
+            this.$store.dispatch('getFilmList', {});
+        }
         // this.$http.jsonp('https://api.douban.com/v2/movie/top250?count=10', {}, {
         //     headers: {},
         //     emulateJSON: true,
@@ -59,11 +72,21 @@ export default {
 <style lang="less">
 .film-list {
     margin-top: 20px;
+    height: 80%;
     .el-table th {
         text-align: center;
     }
     .tags-item {
         margin-left: 10px;
+    }
+    img {
+        height: 100px;
+    }
+    .paragraph {
+        text-align: left;
+    }
+    .el-pagination{
+        margin: 30px auto;
     }
 }
 </style>

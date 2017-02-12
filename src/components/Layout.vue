@@ -3,7 +3,7 @@
         <el-col :xs="8" :sm="6" :md="4" :lg="3">
             <sys-menu></sys-menu>
         </el-col>
-        <el-col :xs="16" :sm="18" :md="20" :lg="21">
+        <el-col :xs="16" :sm="18" :md="20" :lg="21" id='mainView'>
             <router-view class="view"></router-view>
         </el-col>
     </el-row>
@@ -25,6 +25,9 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#mainView{
+    overflow: hidden;
+}
 .el-row,
 .el-col {
     height: 100%;

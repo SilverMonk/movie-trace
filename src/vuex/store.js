@@ -39,6 +39,7 @@ Vue.use(Vuex);
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
     film: [],
+    filmcount: 0,
     director: [{
         id: 0,
         'namecn': '冯小刚',
@@ -67,8 +68,11 @@ const mutations = {
             store.director.push(director);
         }
     },
-    addFilm(store, film) {
-        debugger;
+    addFilm(store, res) {
+        if (res.count != null) {
+            store.filmcount = res.count;
+        }
+        let film = res.data;
         if (util.isArr(film)) {
             store.film = film.reduce((coll, item) => {
                 coll.push(item);
@@ -91,12 +95,20 @@ const getters = {
 const actions = {
     newDirector: function(store, param) {
         return axios.get('/director/insert', param).then((response) => {
-            store.commit('addDirector', response.data.data);
+            if (response.errCode === 0) {
+                store.commit('addDirector', response.data.data);
+            } else {
+                console.log(response.errMsg);
+            }
         });
     },
     getFilmList: function(store, param) {
         return axios.get('/nestfilm/film/list', param).then((response) => {
-            store.commit('addFilm', response.data.data);
+            if (response.errCode === 0) {
+                store.commit('addFilm', response.data.data);
+            } else {
+                console.log(response.errMsg);
+            }
         });
     },
     // increment: function(store, param) {
