@@ -72,7 +72,7 @@ const mutations = {
         if (res.count != null) {
             store.filmcount = res.count;
         }
-        let film = res.data;
+        const film = res.data;
         if (util.isArr(film)) {
             store.film = film.reduce((coll, item) => {
                 coll.push(item);
@@ -80,6 +80,12 @@ const mutations = {
             }, store.film);
         } else if (util.isObj(film)) {
             store.film.push(film);
+        }
+    },
+    updateFilmList(store, res) {
+        debugger;
+        if (res) {
+            store.film = res.data;
         }
     },
 };
@@ -103,11 +109,11 @@ const actions = {
         });
     },
     getFilmList: function(store, param) {
-        return axios.get('/nestfilm/film/list', param).then((response) => {
-            if (response.errCode === 0) {
-                store.commit('addFilm', response.data.data);
+        return axios.get('/nestfilm/film/list', param).then(({ data }) => {
+            if (data.errCode === 0) {
+                store.commit('updateFilmList', data.data);
             } else {
-                console.log(response.errMsg);
+                console.log(data.errMsg);
             }
         });
     },

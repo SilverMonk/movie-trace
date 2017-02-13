@@ -1,9 +1,9 @@
 <template>
     <div class="film-list">
-        <el-table :data="filmList" border default-sort-prop="year" default-sort-order="descending" height=750 style="width: 100%">
+        <el-table :data="filmList" border default-sort-prop="year" default-sort-order="descending" style="width: 100%;">
             <el-table-column prop="namecn" label="名称 " sortable width="200">
             </el-table-column>
-            <el-table-column prop="imbdbno" label="日期" sortable width="120">
+            <el-table-column prop="date" label="日期" sortable width="120">
             </el-table-column>
             <el-table-column prop="languagecn" sortable label="语言" width="120">
             </el-table-column>
@@ -27,7 +27,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination :current-page="currentPage" :page-size="100" layout="total, prev, pager, next" :total="1000">
+        <el-pagination @current-change="currentChange" :current-page="currentPage" :page-size="pageSize" layout=" prev,pager, next" :total="pageTotal">
         </el-pagination>
     </div>
 </template>
@@ -36,15 +36,28 @@ export default {
     name: 'filmlist',
     data() {
         return {
+            pageSize: 5,
+            pageTotal: 50,
             currentPage: 1,
         };
     },
     computed: {
         filmList: function() {
+            // const startindex = (this.currentPage - 1) * this.pageSize;
+            // const endindex = this.currentPage * this.pageSize;
             return this.$store.getters.filmList;
         },
     },
     methods: {
+        currentChange: function(val) {
+            debugger;
+            this.currentPage = val;
+            const data = {
+                pageSize: this.pageSize,
+                currentPage: this.currentPage,
+            };
+            this.$store.dispatch('getFilmList', data);
+        },
         formatter(row) {
             return row.year * 1;
         },
@@ -72,7 +85,9 @@ export default {
 <style lang="less">
 .film-list {
     margin-top: 20px;
-    height: 80%;
+    .el-table div {
+        overflow: hidden;
+    }
     .el-table th {
         text-align: center;
     }
@@ -85,7 +100,7 @@ export default {
     .paragraph {
         text-align: left;
     }
-    .el-pagination{
+    .el-pagination {
         margin: 30px auto;
     }
 }
